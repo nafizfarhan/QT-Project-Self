@@ -1,0 +1,35 @@
+#include<QApplication>
+#include<QWidget>
+#include<QPushButton>
+#include<QLayout>
+#include<QObject>
+#include<QProgressBar>
+
+int main(int argc,char *argv[])
+{
+    QApplication app(argc,argv);
+    QWidget mainWindow;                                         //windowflag
+    mainWindow.setWindowTitle("This is your main Window");
+    QPushButton btn(&mainWindow);
+    QPushButton btn1(&mainWindow);
+    btn.setText("&Press this 10 times");
+    btn1.setText("&Cancel");
+    QHBoxLayout Hori;
+    Hori.addWidget(&btn);
+    Hori.addWidget(&btn1);
+    //mainWindow.setLayout(&Hori);
+    QObject::connect(&btn1,SIGNAL(clicked(bool)),&mainWindow,SLOT(close()));
+    QProgressBar *progress=new QProgressBar(&mainWindow);
+    progress->setMaximum(10);
+    progress->setMinimum(0);
+    for(int i=0;i<progress->maximum();i++){
+        progress->setValue(i);
+    };
+    QVBoxLayout Verti;
+    Verti.addWidget(progress);
+    //Verti.addWidget(Hori);
+    Verti.addLayout(&Hori);
+    mainWindow.setLayout(&Verti);
+    mainWindow.show();
+    return app.exec();
+}
